@@ -13,6 +13,12 @@ go build . && go run example/functions
 - https://go.dev/doc/tutorial/
 - https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go
 
+## Exercises 
 - https://exercism.org/tracks/go
 - https://golangr.com/exercises/
 - https://gophercises.com/
+- https://www.hackerrank.com/domains/algorithms
+
+## Books
+- https://assets.digitalocean.com/books/how-to-code-in-go.pdf
+
