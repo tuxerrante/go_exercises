@@ -1,0 +1,15 @@
+# Ignore all binaries
+/bin/*
+
+# Unignore all dirs
+!*/
+
+### Above combination will ignore all files without extension ###
+
+# Ignore files with extension `.class` & `.sm`
+*.class
+*.sm
+*.exe
+*.o
+
+workspace.code*
