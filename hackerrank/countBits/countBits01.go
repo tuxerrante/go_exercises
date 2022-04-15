@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"math/rand"
 	"math"
+	"time"
 )
 
 /*
@@ -15,11 +16,8 @@ import (
 */
 func countBitsString(num uint32) int32 {
 
-	num_64 := int64(num)
-
-	num_2 := strconv.FormatInt(num_64, 2)
-	fmt.Printf("\t%s\n", num_2)
-
+	num_64 	   := int64(num)
+	num_2  	   := strconv.FormatInt(num_64, 2)
 	_, counter := recursiveCount(num_2, 0)
 	return counter
 }
@@ -48,46 +46,52 @@ func countBitsBinary(num uint32) int32 {
 	return 0
 }
 
-func countBitsSmart(num uint32) uint32{
-	var upBits 			uint32
+func countBitsSmart(num uint32) int32{
+	var upBits 			int32
 	var highestPower	uint32 = math.MaxUint32
 
 	if num % 2 >0  {
 		upBits+=1
-		fmt.Printf("\tUP bits = %d\n", upBits)
+		// fmt.Printf("\tUP bits = %d\n", upBits)
 	}
 																			// upBits = 1 because is odd
 	for ; (num > 2 && highestPower > 1); upBits++ {							// num  = 81.           | num = 17; upBits = 2  | num = 3 upBits = 3
-		// highest power of 2
-		highestPower = uint32(math.Log2(float64(num)))						// log2(81) = 6 		| log2(17)  = 3 	| log2(3) = 1
-		num          = num - uint32(math.Pow(2, float64(highestPower))) 	// num    = 81-64 = 17	| num    = 17-8 = 9 | num = 1
-		fmt.Printf("\tlog2 = %d\n", highestPower)							
-		fmt.Printf("\tnum %d rest %d\n", num, num%2)
-		fmt.Printf("\tUP bits = %d\n", upBits)
+		highestPower = uint32(math.Log2(float64(num)))						// log2(81) = 6 		| log2(17)  = 3 	    | log2(3) = 1
+		num          = num - uint32(math.Pow(2, float64(highestPower))) 	// num    = 81-64 = 17	| num    = 17-8 = 9     | num = 1
+		// fmt.Printf("\tlog2 = %d\n", highestPower)							
+		// fmt.Printf("\tnum %d rest %d\n", num, num%2)
+		// fmt.Printf("\tUP bits = %d\n", upBits)
 	}
 	
 	return upBits
 }
 
+// Profiling with execution time and calling
+func invoker(numInput []uint32, funcName string, countFunc func(num uint32) int32) {
+	fmt.Println("\n=========================================================")
+	start := time.Now()
+
+	for _, numTemp := range numInput{
+		// fmt.Printf("> Number:  %d\n", numTemp)
+		// fmt.Printf("\t%s\n", strconv.FormatInt(int64(numTemp), 2))
+		// fmt.Printf("> Number:  %d (%s)\tUp bits: %d\n", numTemp, strconv.FormatInt(int64(numTemp), 2), countFunc( uint32(numTemp) ))
+		countFunc( uint32(numTemp))
+	}
+	fmt.Printf("Time elapsed for %v func= %vs", funcName, time.Since(start))
+}
 
 func main() {
-	const testSize = 1000000
-	var numInput   = [testSize]uint32{}
+	const 	testSize = 10000000
+	var 	numInput = make([]uint32, testSize)
 	for i:=0; i<testSize; i++ {
 		numInput[i] = uint32(rand.Intn(500))
 	}
 	
-	fmt.Println("=========================================================")
-	for _, numTemp := range numInput{
-		fmt.Printf("> Number:  %d\n", numTemp)
-		num := uint32(numTemp)
-		fmt.Printf("\tUp bits: %d\n", countBitsString(num))
-	}
+	fmt.Printf("\n Test size = %d\n", testSize)
+	// No need to use pointers when using slices instead of array https://stackoverflow.com/a/38732782/3673430
+	invoker(numInput, "countBitsString", countBitsString)
 	
-	fmt.Println("=========================================================")
-	for _, numTemp := range numInput{
-		fmt.Printf("> Number:  %d\n", numTemp)
-		num := uint32(numTemp)
-		fmt.Printf("\tUp bits: %d\n", countBitsSmart(num))
-	}
+	invoker(numInput, "countBitsSmart", countBitsSmart)
+
+	fmt.Println()
 }
