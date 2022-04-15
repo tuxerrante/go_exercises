@@ -36,6 +36,7 @@ func main (){
 	b := 2
 	a, b = swap(a, b)
 	fmt.Printf("> Swap(1, 2)= %v,%v\n", a, b)
+	fmt.Println(swap(a,b) )
 }
 
 func cube (edge int) int {
