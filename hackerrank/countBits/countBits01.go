@@ -13,6 +13,9 @@ import (
  * Complete the 'countBits' function below.
  * The function is expected to return an int32.
  * The function accepts unit32 num as parameter.
+
+ * https://blog.logrocket.com/benchmarking-golang-improve-function-performance/
+ * 
 */
 func countBitsString(num uint32) int32 {
 
