@@ -16,6 +16,7 @@ import (
  * The function accepts STRING_ARRAY strArr as parameter.
 
 	REFERENCES:
+	https://go.dev/play/p/f7z_u1CKINf
 	https://yourbasic.org/golang/how-to-sort-in-go/
 	https://pkg.go.dev/sort#Interface
  */
@@ -43,8 +44,16 @@ func RemainderSorting(strArr []string) []string {
     fmt.Println(myCustomStrings)
 
     // sort again only strings with same module, alphabetically
-    sort.SliceIsSorted(myCustomStrings, func(i, j int) bool {return myCustomStrings[i].value < myCustomStrings[j].value })
-    
+    // sort.SliceIsSorted(myCustomStrings, func(i, j int) bool {return myCustomStrings[i].value < myCustomStrings[j].value })
+	sort.SliceStable(myCustomStrings, func(x,y int) bool { 
+		if (myCustomStrings[x].mod == myCustomStrings[y].mod){
+			return myCustomStrings[x].value < myCustomStrings[y].value
+		}
+		return false			
+	})
+	fmt.Println(myCustomStrings)
+
+
     returnSlice := []string{}
     for _,v := range myCustomStrings {
         returnSlice = append(returnSlice, v.value)
