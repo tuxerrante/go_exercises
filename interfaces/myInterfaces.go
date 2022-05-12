@@ -4,8 +4,7 @@ package main
 	https://go.dev/tour/methods/14
 	https://go.dev/ref/spec#Interface_types
 
-	Implementations are all implicit in Go. The compiler does not require implementation relations to be specified in code explicitly. 
-
+	Implementations are all implicit in Go. The compiler does not require implementation relations to be specified in code explicitly.
 */
 import (
 	"fmt"
