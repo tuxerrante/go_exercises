@@ -16,14 +16,15 @@ func main() {
 	var i interface{}
 	describe(i)
 	
+	
 	// the predeclared type any is an alias for the empty interface.
 	// https://pkg.go.dev/builtin#any
 	var i2 any
 	describe(i2)
 
 	/*
-		var uns_int uint8 = 200
-		describeUnsigned(uns_int)
+	var uns_int uint8 = 200
+	describeUnsigned(uns_int)
 	*/
 	
 	// use non basic interface to restrict types, not for conversions
@@ -37,7 +38,10 @@ func main() {
 	myBytes[0] = 42
 	fmt.Println("> firstByte(myBytes)", firstByte(myBytes) )
 
-
+	type Bytes2 Bytes
+	var myBytes2 Bytes2 = make(Bytes2, 3)
+	myBytes2[0] = 43
+	fmt.Println("> firstByte(myBytes)", firstByte(Bytes(myBytes2)) )
 }
 
 
@@ -74,7 +78,7 @@ func positiveSum[T UnsignedInt](a, b T) T {
 	return a + b
 }
 
-/*												error -> interface contains type constraints
+/*											error -> interface contains type constraints
 func describeUnsigned(ui UnsignedInt) {
 	fmt.Println(ui)
 }
