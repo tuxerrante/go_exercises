@@ -3,14 +3,18 @@ package main
 	https://go101.org/article/interface.html
 	https://go.dev/tour/methods/14
 	https://go.dev/ref/spec#Interface_types
-
-	Implementations are all implicit in Go. The compiler does not require implementation relations to be specified in code explicitly.
+	https://go-book.readthedocs.io/en/latest/interfaces.html
+	-----------------------------------------------------------------------------
+	Implementations are all implicit in Go. 
+	The compiler does not require implementation relations to be specified in code explicitly.
 */
 import (
 	"fmt"
+	"myInterfaces/myReflection"
 )
 
 func main() {
+	/*
 	// Every type that is a member of the type set of an interface implements that interface. 
 	// Any given type may implement several distinct interfaces.
 	var i interface{}
@@ -22,10 +26,8 @@ func main() {
 	var i2 any
 	describe(i2)
 
-	/*
 	var uns_int uint8 = 200
 	describeUnsigned(uns_int)
-	*/
 	
 	// use non basic interface to restrict types, not for conversions
 	var uint1 uint = 10
@@ -42,6 +44,13 @@ func main() {
 	var myBytes2 Bytes2 = make(Bytes2, 3)
 	myBytes2[0] = 43
 	fmt.Println("> firstByte(myBytes)", firstByte(Bytes(myBytes2)) )
+	*/
+
+	// REFLECTION
+	fmt.Println("---\tREFLECTION")
+	myReflection.NonInterfaceTypes()
+	myReflection.InterfaceTypes()
+	
 }
 
 
