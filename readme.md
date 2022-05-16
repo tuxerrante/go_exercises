@@ -1,20 +1,18 @@
 
 # Build and Run
 
-To add more packages locally, follow these suggestions.
-**Important**: to not get mad with gitignore, always build giving an ignored extension to binaries (*.o, *.exe), or move them to an ignored folder (/bin)
+To add more packages locally, follow these suggestions.  
+To not get mad with gitignore, always build giving an ignored extension to binaries (*.o, *.exe), or move them to an ignored folder (/bin)
+
 ```go
-go mod init example/functions
+go mod init myExample
 go mod tidy
-go mod edit -replace example/functions=../functions
-
-
-go run example/functions
+go run .
 ```
 
 # Resources
 ## Tutorials
-- https://go.dev/tour/methods/20
+- https://go.dev/tour
 - https://go101.org/
 - https://go.dev/doc/tutorial/
 - https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go
@@ -29,6 +27,43 @@ go run example/functions
 - https://golangr.com/exercises/
 - https://gophercises.com/
 - https://www.hackerrank.com/domains/algorithms
+
+## Suggested path (WIP) 
+**Use [Go Tour](https://go.dev/tour) as the base lessons order.** While the following list should be used as an extension of the arguments for a deeper understanding:
+- Hello world!
+    - https://exercism.org/tracks/go/exercises/hello-world
+- Strings
+    - https://www.calhoun.io/6-tips-for-using-strings-in-go/
+- Slices
+    - [golangbot.com/arrays-and-slices](https://golangbot.com/arrays-and-slices/)
+    - [go.dev/blog/slices-intro](https://go.dev/blog/slices-intro)
+    - https://pkg.go.dev/builtin#append
+    - [growslice() 1.18 code algorithm](https://github.com/golang/go/blob/dcdb19874ff3699e60e41e6b74757b37c4d99b0f/src/runtime/slice.go#L166)
+- Maps
+- Closures
+    - https://go.dev/tour/moretypes/25
+    - https://gobyexample.com/closures
+    - [Fibonacci exercise](https://go.dev/play/p/MdTuaDKTvzc)
+- Interfaces
+    - [Go tour - interfaces](https://go.dev/tour/methods/9)
+    - [Go101 - Interfaces](https://go101.org/article/interface.html) - Until value boxing chapter
+    - https://pkg.go.dev/builtin#any
+    - [Print code](https://cs.opensource.google/go/go/+/refs/tags/go1.18.2:src/fmt/print.go;l=273) - fast view
+    - [Interface specification](https://go.dev/ref/spec#Interface_types)
+
+- Value boxing, polymorphism, reflection
+    - [Go101 Interfaces](https://go101.org/article/interface.html) - From value boxing 
+    - https://pkg.go.dev/reflect
+
+- [Memory model](https://go.dev/ref/mem)
+    - Profiling 
+        - https://pkg.go.dev/runtime/pprof#pkg-overview
+        - [HTTP profiler](https://pkg.go.dev/net/http/pprof)
+    - [How to dump goroutine stacktraces?](https://stackoverflow.com/a/19094539/3673430)
+
+- Benchmarking
+    - https://blog.logrocket.com/benchmarking-golang-improve-function-performance/
+
 
 ## Books
 - https://assets.digitalocean.com/books/how-to-code-in-go.pdf
