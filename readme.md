@@ -32,6 +32,9 @@ go run .
 **Use [Go Tour](https://go.dev/tour) as the base lessons order.** While the following list should be used as an extension of the arguments for a deeper understanding:
 - Hello world!
     - https://exercism.org/tracks/go/exercises/hello-world
+- Modules and packages
+    - https://go.dev/doc/tutorial/create-module
+    - https://go101.org/article/packages-and-imports.html
 - Strings
     - https://www.calhoun.io/6-tips-for-using-strings-in-go/
 - Slices
