@@ -65,11 +65,28 @@ func (DummyWriter) Write(buf []byte) (int, error) {
 	return len(buf), nil
 }
 
+type fakeString struct {
+	a string
+}
+func (fakeString) Write(buf []byte) (int, error){
+	return 1, nil
+}
+
 func InterfaceTypes() {
 	
 	var x interface{} = DummyWriter{}
 	var y interface{} = "abc"
-	
+
+	// Can I assert from a string to a type interface with a dynamic of string
+	var ss interface{} = fakeString{}
+	ss = fakeString{ a: "abc"}
+	fmt.Println(ss)
+	ss2, ok2 := ss.(string)
+	if ! ok2 {
+		fmt.Println("> KO")
+	}
+	describe(ss2)
+
 	// Now the dynamic type of y is "string".
 	var w Writer
 	var ok bool
@@ -78,6 +95,7 @@ func InterfaceTypes() {
 	// Writer and interface{}.
 	w, ok = x.(Writer)
 	fmt.Println(w, ok) // {} true
+	
 	x, ok = w.(interface{})
 	fmt.Println(x, ok) // {} true
 
@@ -85,7 +103,8 @@ func InterfaceTypes() {
 	// which doesn't implement Writer.
 	w, ok = y.(Writer)
 	fmt.Println(w, ok) //  false
-	w = y.(Writer)     // will panic
+	// will panic:  
+	// w = y.(Writer)
 
 }
 
