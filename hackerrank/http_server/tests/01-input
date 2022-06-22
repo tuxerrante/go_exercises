@@ -1,5 +1,6 @@
-4
+5
 {"type":"post", "payload":"{\"id\":\"id0000\", \"name\":\"Malawi\", \"area\":29500}"}
 {"type":"post", "payload":"{\"id\":\"id0001\", \"name\":\"Great Bear Lake\", \"area\":31000}"}
 {"type":"get", "payload":"id0001"}
-{"type":"get", "payload":"id0000"}
+{"type":"delete", "payload":"{\"id\":\"id0001\"}"}
+{"type":"get", "payload":"id0001"}
