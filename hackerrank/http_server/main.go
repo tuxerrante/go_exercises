@@ -20,19 +20,18 @@ import (
  * All functions are expected to be void.
  * All functions accept http.ResponseWriter w and *http.Request req as parameters.
  */
-
 func postHandler(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("> POST handler")
 
-	body, err := io.ReadAll(req.Body)
+    body, err := io.ReadAll(req.Body)
     checkError(err)
-	fmt.Println("  - req.Body", string(body))
+    fmt.Println("  - req.Body", string(body))
 
 	var l Lake
 	err = json.Unmarshal(body , &l)
 	checkError(err)
 
-    // TO protect with a Mutex
+    // TODO: protect with a Mutex
 	store[l.Id] = l
 
 	fmt.Println("  - STORE: ", store)
@@ -60,7 +59,7 @@ func getHandler(w http.ResponseWriter, req *http.Request) {
 	id := req.URL.Query().Get("id")
 	
 	if (store[id] == Lake{}) {
-		// w.WriteHeader(http.StatusNotFound)
+        // w.WriteHeader(http.StatusNotFound)
         http.Error(w, "Lake ID not found: "+id, http.StatusNotFound)
         return
 	} 
