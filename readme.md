@@ -67,6 +67,10 @@ go run .
 - Benchmarking
     - https://blog.logrocket.com/benchmarking-golang-improve-function-performance/
 
+- Concurrency and Routines
+    - https://go.dev/tour/concurrency/1
+    - https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/concurrency
+    - https://go101.org/article/channel-use-cases.html
 
 ## Books
 - https://assets.digitalocean.com/books/how-to-code-in-go.pdf
