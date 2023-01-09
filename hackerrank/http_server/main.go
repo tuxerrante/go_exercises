@@ -1,18 +1,17 @@
 package main
 
 import (
-    "bufio"
-    "encoding/json"
-    "fmt"
-    "io"
-    "net/http"
-    "os"
-    "strconv"
-    "strings"
-    "time"
+	"bufio"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 )
-
-
 
 /*
  * Complete the 'postHandler', 'deleteHandler' and 'getHandler' functions below.
@@ -21,59 +20,61 @@ import (
  * All functions accept http.ResponseWriter w and *http.Request req as parameters.
  */
 func postHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("> POST handler")
+	log.Println("> POST handler")
 
-    body, err := io.ReadAll(req.Body)
-    checkError(err)
-    fmt.Println("  - req.Body", string(body))
-
-	var l Lake
-	err = json.Unmarshal(body , &l)
+	body, err := io.ReadAll(req.Body)
 	checkError(err)
 
-    // TODO: protect with a Mutex
+	var l Lake
+	err = json.Unmarshal(body, &l)
+	checkError(err)
+
+	// Empty body
+	if (l == Lake{}) {
+		// w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	// TODO: protect with a Mutex
 	store[l.Id] = l
 
-	fmt.Println("  - STORE: ", store)
+	log.Println("  - STORE: ", store)
 }
 
-
 func deleteHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("> DELETE handler")
+	log.Println("> DELETE handler")
 
 	id := req.URL.Query().Get("id")
-	
+
 	if (store[id] == Lake{}) {
-		http.Error(w, "Lake ID not found: "+ id, http.StatusNotFound)
-        return
+		http.Error(w, "Lake ID not found: "+id, http.StatusNotFound)
+		return
 	}
 
 	delete(store, id)
-	fmt.Println("  - STORE: ", store)
+	log.Println("  - STORE: ", store)
 }
-
 
 func getHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("> GET handler")
-	
-	id := req.URL.Query().Get("id")
-	
-	if (store[id] == Lake{}) {
-        // w.WriteHeader(http.StatusNotFound)
-        http.Error(w, "Lake ID not found: "+id, http.StatusNotFound)
-        return
-	} 
+	log.Println("> GET handler")
 
-    resp, err := json.Marshal(store[id])
-    checkError(err)
-    w.Write(resp)
-	
-	fmt.Println("  - STORE: ", store)
+	id := req.URL.Query().Get("id")
+
+	if (store[id] == Lake{}) {
+		// w.WriteHeader(http.StatusNotFound)
+		http.Error(w, "Lake ID not found: "+id, http.StatusNotFound)
+		return
+	}
+
+	resp, err := json.Marshal(store[id])
+	checkError(err)
+	w.Write(resp)
+
+	log.Println("  - STORE: ", store)
 }
 
-
 func main() {
-    // reader  := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	// reader  := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
 	// --- Custom testing
 	file, err := os.Open("./tests/01-input")
 	if err != nil {
@@ -81,108 +82,110 @@ func main() {
 	}
 	defer file.Close()
 	reader := bufio.NewReader(file)
-	// ---
+
 	// --- export desired output target
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
-    defer stdout.Close()
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    actionsCount, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-	fmt.Println("> Incoming requests: ", actionsCount)
-    checkError(err)
-    
-    http.HandleFunc("/get", getHandler)
-    http.HandleFunc("/post", postHandler)
-    http.HandleFunc("/delete", deleteHandler)
-    go http.ListenAndServe(portSuffix, nil)
-    time.Sleep(100 * time.Millisecond)
+	actionsCount, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	log.Println("> Incoming requests: ", actionsCount)
+	checkError(err)
 
-    var actions []string
+	http.HandleFunc("/get", getHandler)
+	http.HandleFunc("/post", postHandler)
+	http.HandleFunc("/delete", deleteHandler)
 
-    for i := 0; i < int(actionsCount); i++ {
-        actionsItem := readLine(reader)
-        actions = append(actions, actionsItem)
-    }
-    
-    for _, actionStr := range actions {
-        var action Action
-        err := json.Unmarshal([]byte(actionStr), &action)
-        checkError(err)
-        switch action.Type {
+	go http.ListenAndServe(portSuffix, nil)
+	time.Sleep(100 * time.Millisecond)
 
-        case "post":
-            resp, err := http.Post(address + "/post", "application/json", strings.NewReader(action.Payload))
-            getRespHeaders(resp)
-            checkError(err)
+	var actions []string
 
-        case "delete":
-            client := &http.Client{}
-            req, err := http.NewRequest("DELETE", address + "/delete?id=" + action.Payload, nil)
-            checkError(err)
-            
-            resp, err := client.Do(req)
-            getRespHeaders(resp)
-            checkError(err)
+	for i := 0; i < int(actionsCount); i++ {
+		actionsItem := readLine(reader)
+		actions = append(actions, actionsItem)
+	}
 
-            if resp.StatusCode != 200 {
-                fmt.Fprintf(writer, "%s\n", resp.Status)
-                continue
-            }
+	for _, actionStr := range actions {
+		var action Action
+		err := json.Unmarshal([]byte(actionStr), &action)
+		checkError(err)
+		switch action.Type {
 
-        case "get":
-            resp, err := http.Get(address + "/get?id=" + action.Payload)
-            getRespHeaders(resp)
-            checkError(err)
-            if resp.StatusCode != 200 {
-                fmt.Fprintf(writer, "%s\n", resp.Status)
-                continue
-            }
-            var lake Lake
-            err = json.NewDecoder(resp.Body).Decode(&lake)
-            checkError(err)
-            fmt.Fprintf(writer, "%s\n", lake.Name)
-            fmt.Fprintf(writer, "%d\n", lake.Area)
-        }
-    }
+		case "post":
+			resp, err := http.Post(Address+"/post", "application/json", strings.NewReader(action.Payload))
+			getRespHeaders(resp)
+			checkError(err)
 
-    fmt.Fprintf(writer, "\n")
+		case "delete":
+			client := &http.Client{}
+			req, err := http.NewRequest("DELETE", Address+"/delete?id="+action.Payload, nil)
+			checkError(err)
 
-    writer.Flush()
+			resp, err := client.Do(req)
+			getRespHeaders(resp)
+			checkError(err)
+
+			if resp.StatusCode != 200 {
+				fmt.Fprintf(writer, "%s\n", resp.Status)
+				continue
+			}
+
+		case "get":
+			resp, err := http.Get(Address + "/get?id=" + action.Payload)
+			getRespHeaders(resp)
+			checkError(err)
+			if resp.StatusCode != 200 {
+				fmt.Fprintf(writer, "%s\n", resp.Status)
+				continue
+			}
+			var lake Lake
+			err = json.NewDecoder(resp.Body).Decode(&lake)
+			checkError(err)
+			fmt.Fprintf(writer, "%s\n", lake.Name)
+			fmt.Fprintf(writer, "%d\n", lake.Area)
+		}
+	}
+
+	fmt.Fprintf(writer, "\n")
+
+	writer.Flush()
 }
 
 const portSuffix = ":3333"
-var address = "http://127.0.0.1" + portSuffix
+
+var Address = "http://localhost" + portSuffix
 
 type Lake struct {
-    Id   string `json:"id"`
-    Name string `json:"name"`
-    Area int32  `json:"area"`
+	Id   string `json:"id"`
+	Name string `json:"name"`
+	Area int32  `json:"area"`
 }
 
 type Action struct {
-    Type    string
-    Payload string
+	Type    string
+	Payload string
 }
 
 var store = map[string]Lake{}
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
 
-func getRespHeaders(resp *http.Response){
-    fmt.Printf(">> Server response headers: %v\n   Status Code: %v\n", resp.Header, resp.StatusCode)
+func getRespHeaders(resp *http.Response) {
+	fmt.Printf(">> Server response headers: %v\n   Status Code: %v\n", resp.Header, resp.StatusCode)
 }
