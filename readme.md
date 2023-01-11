@@ -11,6 +11,8 @@ go run .
 ```
 
 # Resources
+Master go learning roadmap: https://roadmap.sh/golang/
+
 ## Tutorials
 - https://go.dev/tour
 - https://go101.org/
