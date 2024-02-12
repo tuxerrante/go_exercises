@@ -13,3 +13,4 @@
 *.o
 
 workspace.code*
+.vscode
