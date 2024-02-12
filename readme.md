@@ -11,6 +11,8 @@ go run .
 ```
 
 # Resources
+Master go learning roadmap: https://roadmap.sh/golang/
+
 ## Tutorials
 - https://go.dev/tour
 - https://go101.org/
@@ -68,6 +70,7 @@ go run .
     - https://blog.logrocket.com/benchmarking-golang-improve-function-performance/
 
 - Concurrency and Routines
+    - https://www.kelche.co/blog/go/golang-scheduling/
     - https://go.dev/tour/concurrency/1
     - https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/concurrency
     - https://go101.org/article/channel-use-cases.html
