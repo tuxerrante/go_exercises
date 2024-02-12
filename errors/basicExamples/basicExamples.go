@@ -12,13 +12,12 @@ func BasicExamples() error {
 
 	ok = httpExample()
 
-
 	return ok
 }
 
 /*
-	Propagate an error
-	https://pkg.go.dev/net/http#Client.Get
+Propagate an error
+https://pkg.go.dev/net/http#Client.Get
 */
 func httpExample() error {
 	const url string = "http://httpstat.us/200"
@@ -34,7 +33,6 @@ func httpExample() error {
 
 	// body, err := io.ReadAll(http_resp.Body)
 	// defer body.Body.Close()
-	
 
 	fmt.Println(http_resp.StatusCode)
 

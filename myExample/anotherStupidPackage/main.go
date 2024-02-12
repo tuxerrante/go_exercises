@@ -6,12 +6,12 @@ import (
 	"myExample/stupidPackage"
 )
 
-func init(){
+func init() {
 	log.SetFlags(3)
 }
 
-func main(){
-	
+func main() {
+
 	// olly := "Olly"
 	// pointingToOlly := &olly
 	var voidVar string
@@ -28,6 +28,6 @@ func main(){
 	fmt.Println(greeting)
 }
 
-func describe(i any){
+func describe(i any) {
 	fmt.Printf("'%+v' %+T\n", i, i)
 }

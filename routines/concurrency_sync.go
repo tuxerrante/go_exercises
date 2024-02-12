@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"math/rand"
-	"time"
 	"sync"
+	"time"
 )
 
 var wg sync.WaitGroup
@@ -18,7 +18,7 @@ func CS_SayGreetings(greeting string, times int) {
 	wg.Done() // <=> wg.Add(-1)
 }
 
-func CS_SayGreetings2(s string){
+func CS_SayGreetings2(s string) {
 	wg.Add(1)
 	log.Println(s)
 	wg.Done()
@@ -33,7 +33,7 @@ func ConcurrencySync() {
 
 	go CS_SayGreetings2("hello 2!")
 
-	go func(){
+	go func() {
 		log.Println("Panic?")
 		wg.Done()
 	}()

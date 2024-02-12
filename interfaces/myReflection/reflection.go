@@ -29,25 +29,25 @@ import (
 */
 
 /*
-	In the case of T being a non-interface type, if the dynamic type of i exists and is identical to T, then the assertion will succeed,
+In the case of T being a non-interface type, if the dynamic type of i exists and is identical to T, then the assertion will succeed,
 */
-func NonInterfaceTypes(){
-	
+func NonInterfaceTypes() {
+
 	var i interface{} = 123
 
 	// asserted type is a non-interface int value
 	n, ok := i.(int)
-	if ! ok {
+	if !ok {
 		log.Println("nonInterfaceTypes(): can't complete assertion from int to int!")
 	}
 	describe(n)
-		
-	n = i.(int)		// we can now assign the value
+
+	n = i.(int) // we can now assign the value
 	describe(n)
 
 	// let's try with a float
 	n2, ok := i.(float64)
-	if ! ok {
+	if !ok {
 		log.Println("nonInterfaceTypes(): can't complete assertion from int to float64!")
 	}
 	describe(n2)
@@ -55,12 +55,12 @@ func NonInterfaceTypes(){
 
 }
 
-
 type Writer interface {
 	Write(buf []byte) (int, error)
 }
 
 type DummyWriter struct{}
+
 func (DummyWriter) Write(buf []byte) (int, error) {
 	return len(buf), nil
 }
@@ -68,21 +68,22 @@ func (DummyWriter) Write(buf []byte) (int, error) {
 type fakeString struct {
 	a string
 }
-func (fakeString) Write(buf []byte) (int, error){
+
+func (fakeString) Write(buf []byte) (int, error) {
 	return 1, nil
 }
 
 func InterfaceTypes() {
-	
+
 	var x interface{} = DummyWriter{}
 	var y interface{} = "abc"
 
 	// Can I assert from a string to a type interface with a dynamic of string
 	var ss interface{} = fakeString{}
-	ss = fakeString{ a: "abc"}
+	ss = fakeString{a: "abc"}
 	fmt.Println(ss)
 	ss2, ok2 := ss.(string)
-	if ! ok2 {
+	if !ok2 {
 		fmt.Println("> KO")
 	}
 	describe(ss2)
@@ -95,7 +96,7 @@ func InterfaceTypes() {
 	// Writer and interface{}.
 	w, ok = x.(Writer)
 	fmt.Println(w, ok) // {} true
-	
+
 	x, ok = w.(interface{})
 	fmt.Println(x, ok) // {} true
 
@@ -103,12 +104,11 @@ func InterfaceTypes() {
 	// which doesn't implement Writer.
 	w, ok = y.(Writer)
 	fmt.Println(w, ok) //  false
-	// will panic:  
+	// will panic:
 	// w = y.(Writer)
 
 }
 
-
 func describe(i interface{}) {
-	fmt.Printf("%T\t%+v\n", i,i)
+	fmt.Printf("%T\t%+v\n", i, i)
 }
