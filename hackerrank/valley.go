@@ -1,4 +1,4 @@
-package main
+package hackerrank
 
 import (
 	"bufio"
@@ -78,21 +78,21 @@ func walk(currentPosition int32, path string, seaLevel int, valleyCounter *int32
 	return currentPosition
 }
 
-func main() {
+func walkTest() {
 	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
 	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-	checkError(err)
+	valleyCheckError(err)
 
 	defer stdout.Close()
 
 	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
 	stepsTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-	checkError(err)
+	valleyCheckError(err)
 	steps := int32(stepsTemp)
 
-	path := readLine(reader)
+	path := valleyReadLine(reader)
 
 	result := countingValleys(steps, path)
 
@@ -101,7 +101,7 @@ func main() {
 	writer.Flush()
 }
 
-func readLine(reader *bufio.Reader) string {
+func valleyReadLine(reader *bufio.Reader) string {
 	str, _, err := reader.ReadLine()
 	if err == io.EOF {
 		return ""
@@ -110,7 +110,7 @@ func readLine(reader *bufio.Reader) string {
 	return strings.TrimRight(string(str), "\r\n")
 }
 
-func checkError(err error) {
+func valleyCheckError(err error) {
 	if err != nil {
 		panic(err)
 	}

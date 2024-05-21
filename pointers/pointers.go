@@ -1,8 +1,10 @@
 package main
+
 import (
 	"fmt"
 )
-func main (){
+
+func main() {
 
 	i := 10
 	fmt.Printf(" Var address type %T and value %v\n", &i, &i)

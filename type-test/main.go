@@ -1,4 +1,5 @@
 package main
+
 // DOCS:
 // - https://go.dev/blog/declaration-syntax
 

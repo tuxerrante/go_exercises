@@ -1,11 +1,14 @@
 package main
-import ("fmt")
+
+import (
+	"fmt"
+)
 
 // https://go101.org/article/container.html
 
-func mapExamples(){
+func mapExamples() {
 
-	// 
+	//
 	my_map := make(map[int]int)
 	my_map[2] = 4
 	my_map[4] = 16

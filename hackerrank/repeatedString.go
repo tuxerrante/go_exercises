@@ -20,7 +20,7 @@ Constraints
 1<= s <= 100
 1<= n <= 10^12
 */
-package main
+package hackerrank
 
 import (
 	"bufio"
@@ -79,7 +79,7 @@ func countByte(s string, b byte) int64 {
 	return matches
 }
 
-func main() {
+func countBytesTest() {
 	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
 	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))

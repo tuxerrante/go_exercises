@@ -1,7 +1,8 @@
 package main
+
 import "fmt"
 
-func main (){
+func main() {
 	s := [3]int{10, 20, 30}
 	fmt.Println(s)
 
@@ -18,18 +19,18 @@ func main (){
 
 }
 
-func modify(slice []int){
-	for i := range slice{
+func modify(slice []int) {
+	for i := range slice {
 		slice[i] -= 5
-	}	
+	}
 }
 
-func modifyMap(m map[string]int){
+func modifyMap(m map[string]int) {
 	m["A"] = 100
 }
 
-func modifyArray(arr [3]int){
-	for i := range arr{
-		arr[i] -=6
+func modifyArray(arr [3]int) {
+	for i := range arr {
+		arr[i] -= 6
 	}
 }
